@@ -1,20 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
-using System.Runtime.InteropServices;
+using System.IO;
 using Emgu.CV;
-using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 
 namespace ConsoleApplication1
 {
-    public struct RGBHistogram
+    public class RGBHistogram
     {
         public double[] rBins;
         public double[] gBins;
         public double[] bBins;
+
+        public RGBHistogram() { }
+
+        public RGBHistogram(int rStep, int gStep, int bStep) {
+            rBins = new double[rStep];
+            gBins = new double[gStep];
+            bBins = new double[bStep];
+        }
     }
 
     class lab05_ColorHistogram
@@ -42,13 +45,40 @@ namespace ConsoleApplication1
                 Console.Write(hist.bBins[i] + " ");
             }
             Console.WriteLine("\n");
+
+            string path = Environment.CurrentDirectory;
+            Console.WriteLine("Curr dir: " + path);
+            string[] files = Directory.GetFiles(path);
+            foreach (string f in files)
+            {
+
+            }
+
             // ======== display an image ========
             String win1 = "Test Window"; //The name of the window
             CvInvoke.NamedWindow(win1); //Create the window using the specific name
-            CvInvoke.Imshow(win1, frame); //Show the image   
+            //CvInvoke.Imshow(win1, frame); //Show the image   
             CvInvoke.WaitKey(0);
             CvInvoke.DestroyWindow(win1); //Destory the window
 
+        }
+
+        RGBHistogram CompareHistograms(RGBHistogram h1, RGBHistogram h2, int rStep, int gStep, int bStep)
+        {
+            RGBHistogram result = new RGBHistogram(rStep, gStep, bStep);
+            for (int i = 0; i < rStep; i++)
+            {
+                result.rBins[i] = Math.Min(h1.rBins[i], h2.rBins[i]);
+            }
+            for (int i = 0; i < gStep; i++)
+            {
+                result.gBins[i] = Math.Min(h1.gBins[i], h2.gBins[i]);
+            }
+            for (int i = 0; i < bStep; i++)
+            {
+                result.bBins[i] = Math.Min(h1.bBins[i], h2.bBins[i]);
+            }
+            return result;
         }
 		
 		// calculate color histogram for a given image img by uniformly quantizing R, G, and B

@@ -67,6 +67,9 @@
   <ItemGroup>
     <Compile Include="..\..\CommonAssemblyInfo.cs" />
     <Compile Include="ColorHistogram.cs" />
+    <Compile Include="emgucv_image.cs" />
+    <Compile Include="emgucv_video.cs" />
+    <Compile Include="emgucv_videoWriter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
